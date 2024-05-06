@@ -21,6 +21,10 @@ class TodoListApiView(APIView):
         '''
         todos = Todo.objects.filter(user = request.user.id)
         serializer = TodoSerializer(todos, many=True)
+        print(serializer)
+        print("\n-----\n")
+        print(serializer.data)
+        print(status.HTTP_200_OK)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     # 2. Create
@@ -36,6 +40,12 @@ class TodoListApiView(APIView):
         serializer = TodoSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
+            print(Response(serializer.data, status=status.HTTP_201_CREATED))
+            if "201" in str(Response(serializer.data, status=status.HTTP_201_CREATED)):
+                print("checked")
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            print(Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST))
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+# use this to create api for the car shop
